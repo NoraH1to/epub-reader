@@ -1,0 +1,38 @@
+.epub-reader {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  justify-content: space-between;
+  height: 100%;
+  width: 100%;
+  #epub {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    flex-grow: 1;
+    height: 100%;
+  }
+  #actions-container {
+    width: 100%;
+    padding: 0 16px 8px 16px;
+    #actions {
+      display: flex;
+      flex-direction: row;
+      align-items: stretch;
+      justify-content: space-around;
+    }
+  }
+  #status-container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: nowrap;
+    padding: 8px 16px 0px 16px;
+    p {
+      font-size: 0.75em;
+    }
+  }
+}

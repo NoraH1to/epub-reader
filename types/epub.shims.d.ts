@@ -17,4 +17,16 @@ declare module 'epubjs' {
     display(target?: string): Promise<Section>;
     display(target?: number): Promise<Section>;
   }
+  export class Spine {
+    items: {
+      canonical: string;
+      cfiBase: string;
+      href: string;
+      idref: string;
+      index: number;
+      linear: string;
+      next: Function;
+      prev: Function;
+    }[];
+  }
 }

@@ -4,7 +4,7 @@ const routes: IRoute[] = [
   {
     path: '/',
     component: '@/pages/index.tsx',
-    wrappers: ['@/wrapper/MdUI.tsx'],
+    wrappers: ['@/wrapper/Theme.tsx', '@/wrapper/MdUI.tsx'],
     __isDynamic: true,
   },
 ];

@@ -1,6 +1,7 @@
+import { Theme, ThemeOptions } from '@material-ui/core';
 import { Book } from 'epubjs';
 import Navigation from 'epubjs/types/navigation';
-import { FC } from 'react';
+import { FC, ReactElement } from 'react';
 
 declare module '*.css';
 declare module '*.less';
@@ -23,29 +24,58 @@ interface UseEpubProps {
     height?: string | number;
     snap?: boolean;
     manager?: 'continuous' | any;
+    minSpreadWidth?: number;
   };
+  theme?: any;
 }
 interface UseEpubReturn {
   book: Book;
   navigation: Navigation;
   loading: boolean;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  currentTitle: string;
 }
 interface UseEpub {
   (props: UseEpubProps): UseEpubReturn;
 }
+
+type UseCurrentLocationInfoProps = Book | undefined;
+
+interface UseCurrentLocationInfoReturn {
+  currentTitle: string;
+  currentRealHref: string;
+}
+interface UseCurrentLocationInfo {
+  (props: UseCurrentLocationInfoProps): UseCurrentLocationInfoReturn;
+}
+
+type UseChildrenProps = { Children: FC<any> | ReactElement; Compnent: FC<any> };
+interface UseChildren {
+  ({ Children, Compnent }: UseChildrenProps): FC<any>;
+}
+
 type EpubOpenFC = FC<{
   useBook: (file: Book['Input']) => void;
 }>;
-type EpubReaderFC = FC<{ OpenEpubComponent: EpubOpenFC }>;
-type EpubActionTabPanelFC = FC<{ value: any }>;
-interface EpubActionTabData {
-  label: string;
+type EpubSheetFC = FC<{
+  visible: boolean;
+  onChange(value: boolean): void;
+}>;
+type EpubReaderFC = FC<{
+  OpenEpubComponent: EpubOpenFC;
+  SheetComponent: EpubSheetFC;
+  file?: Book['Input'];
+}>;
+type TabPanelFC = FC<{ value: any }>;
+interface TabData {
+  label?: string;
   value: any;
   Panel: FC<any>;
-  icon?: any;
+  icon?: ReactElement;
 }
+type EpubReaderStatusBarFC = FC<{
+  title: string;
+}>;
+
 interface ReaderContextContent {
   book?: Book;
   actions?: {
@@ -53,6 +83,18 @@ interface ReaderContextContent {
     prev: () => void;
     goto: (path: string) => void;
   };
-  navigation?: Navigation;
   closeDrawer?: Function;
+}
+interface ThemeContextContent {
+  currentTheme?: GlobalTheme;
+  setCurrentTheme?: React.Dispatch<React.SetStateAction<GlobalTheme>>;
+}
+
+interface GlobalTheme {
+  name: string;
+  label: string;
+  className?: string;
+  mduiConfig: ThemeOptions;
+  mdui: Theme;
+  epub?: any;
 }
