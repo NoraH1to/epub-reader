@@ -1,15 +1,16 @@
-# umi project
+# Epub Reader
 
-## Getting Started
+### Web Site Todo
 
-Install dependencies,
+- [x] theme
+- [ ] webDAV
+- [ ] notes
+- [ ] mark
 
-```bash
-$ yarn
-```
+### Desktop Site Todo
 
-Start the dev server,
-
-```bash
-$ yarn start
-```
+- [ ] theme
+- [ ] webDAV
+- [ ] notes
+- [ ] mark
+- [ ] buffer
