@@ -9,6 +9,9 @@ export default defineConfig({
   nodeModulesTransform: {
     type: 'none',
   },
+  devServer: {
+    port: 8100,
+  },
   hash: true,
   sass: {},
   fastRefresh: {},

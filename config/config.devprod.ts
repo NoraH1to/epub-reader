@@ -5,6 +5,9 @@ import { defineConfig } from 'umi';
  */
 export default defineConfig({
   mock: false,
+  devServer: {
+    port: 8200,
+  },
   define: {
     BASE_URL: 'http://xxxx', // TODO: prod host
     NODE_ENV: 'prod',

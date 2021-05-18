@@ -1,18 +1,35 @@
 {
-  "name": "umi-template",
+  "name": "epub-reader",
   "author": "NoraH1to",
   "version": "1.0.0",
   "license": "MIT",
   "homepage": ".",
   "private": true,
   "scripts": {
-    "start": "cross-env PORT=8100 umi dev",
-    "start:prod": "cross-env UMI_ENV=devprod PORT=8200 umi dev",
+    "start": "umi dev",
+    "start:prod": "cross-env UMI_ENV=devprod umi dev",
+    "start:elec": "cross-env UMI_ENV=electron concurrently \"umi dev\" \"electron .\"",
     "build": "cross-env UMI_ENV=master umi build",
+    "build:elec": "cross-env UMI_ENV=electron umi build && electron-builder",
     "postinstall": "umi generate tmp",
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
     "test": "umi-test",
     "test:coverage": "umi-test --coverage"
+  },
+  "main": "./src/electron/index.js",
+  "build": {
+    "files": [
+      "./dist/**/*",
+      "./src/electron/**/*"
+    ],
+    "appId": "com.norah1to.epubreader",
+    "asar": false,
+    "electronDownload": {
+      "mirror": "https://npm.taobao.org/mirrors/electron/"
+    },
+    "directories": {
+      "output": "release"
+    }
   },
   "gitHooks": {
     "pre-commit": "lint-staged"
@@ -47,7 +64,11 @@
     "@types/react-swipeable-views": "^0.13.0",
     "@umijs/plugin-sass": "^1.1.1",
     "@umijs/test": "^3.4.14",
+    "concurrently": "^6.1.0",
     "cross-env": "^7.0.3",
+    "electron": "^12.0.8",
+    "electron-builder": "^22.10.5",
+    "electron-is": "^3.0.0",
     "lint-staged": "^10.0.7",
     "prettier": "^2.2.0",
     "react": "17.x",
