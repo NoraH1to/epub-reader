@@ -1,4 +1,5 @@
 import { Theme, ThemeOptions } from '@material-ui/core';
+import { Actions } from 'ahooks/lib/useBoolean';
 import { Book } from 'epubjs';
 import Navigation from 'epubjs/types/navigation';
 import { FC, ReactElement } from 'react';
@@ -46,6 +47,27 @@ interface UseCurrentLocationInfoReturn {
 }
 interface UseCurrentLocationInfo {
   (props: UseCurrentLocationInfoProps): UseCurrentLocationInfoReturn;
+}
+
+interface UseActionsReturn {
+  actions: {
+    next: () => void;
+    prev: () => void;
+    goto: (path: string) => void;
+  };
+}
+interface UseActions {
+  (book: Book): UseActionsReturn;
+}
+
+interface UseReaderEventProps {
+  book: Book;
+  actions: UseActionsReturn['actions'];
+  drawerVisibleActions?: Actions;
+  domRef: React.RefObject<HTMLDivElement>;
+}
+interface UseReaderEvent {
+  (props: UseReaderEventProps): void;
 }
 
 type UseChildrenProps = { Children: FC<any> | ReactElement; Compnent: FC<any> };

@@ -1,7 +1,9 @@
-import { useCallback, useMemo, useRef } from 'react';
+import { useCallback, useRef } from 'react';
 import { Book } from 'epubjs';
+import { useDebounceFn } from 'ahooks';
+import { UseActions } from 'types/typings';
 
-const useActions = (book: Book) => {
+const useActions: UseActions = (book: Book) => {
   // 对 book 的操作保持原子性，不然会出 bug 无法翻页
   let changeAbleRef = useRef(true);
   const needFlag = useCallback(
@@ -13,27 +15,40 @@ const useActions = (book: Book) => {
     },
     [],
   );
+  const waitTime = 100;
   // 对书本的操作
-  const actions = useMemo(
-    () => ({
-      next() {
+  const actions = {
+    next: useDebounceFn(
+      () => {
         if (book.rendition) {
           needFlag(changeAbleRef, () => book.rendition?.next());
         }
       },
-      prev() {
+      {
+        wait: waitTime,
+      },
+    ).run,
+    prev: useDebounceFn(
+      () => {
         if (book.rendition) {
           needFlag(changeAbleRef, () => book.rendition?.prev());
         }
       },
-      goto(path: string) {
+      {
+        wait: waitTime,
+      },
+    ).run,
+    goto: useDebounceFn(
+      (path: string) => {
         if (book.rendition) {
           needFlag(changeAbleRef, () => book.rendition?.display(path));
         }
       },
-    }),
-    [book.rendition],
-  );
+      {
+        wait: waitTime,
+      },
+    ).run,
+  };
 
   return { actions };
 };

@@ -1,14 +1,11 @@
 import { FC, useCallback, useContext } from 'react';
 import { Button } from '@material-ui/core';
 import ImportContactsRoundedIcon from '@material-ui/icons/ImportContactsRounded';
-import FullscreenRoundedIcon from '@material-ui/icons/FullscreenRounded';
-import FullscreenExitRoundedIcon from '@material-ui/icons/FullscreenExitRounded';
 import EpubReader from '@/components/EpubReader';
 import { EpubOpenFC, TabData } from 'types/typings';
 import useChildren from '@/hooks/useChildren';
 import DrawerContainer from '@/components/EpubReader/DrawerContainer';
 import TabsPlus from '@/components/TabPlus';
-import { useFullscreen } from 'ahooks';
 import NavList from '@/components/NavList';
 import './index.scss';
 import { themeContext } from '@/wrapper/Theme';
@@ -51,29 +48,6 @@ const OpenBook: EpubOpenFC = ({ useBook }) => (
   </div>
 );
 
-const FullscreenBtn: FC = () => {
-  const [isFullscreen, { setFull, exitFull, toggleFull }] = useFullscreen(
-    document.documentElement,
-  );
-
-  const btnFullscreenIcon = isFullscreen ? (
-    <FullscreenExitRoundedIcon />
-  ) : (
-    <FullscreenRoundedIcon />
-  );
-
-  const btnFullscreenTitle = isFullscreen ? '退出全屏' : '全屏';
-  return (
-    <Button
-      title={btnFullscreenTitle}
-      size="large"
-      onClick={() => toggleFull()}
-    >
-      {btnFullscreenIcon}
-    </Button>
-  );
-};
-
 const TabValues = {
   NAV: 0,
   THEMES: 1,
@@ -94,16 +68,11 @@ const index: FC = () => {
   const Drawer = useChildren({
     Compnent: DrawerContainer,
     Children: (
-      <>
-        <TabsPlus
-          tabDatas={tabDatas}
-          defaultTab={TabValues.NAV}
-          style={{ height: '60vh' }}
-        />
-        <div>
-          <FullscreenBtn />
-        </div>
-      </>
+      <TabsPlus
+        tabDatas={tabDatas}
+        defaultTab={TabValues.NAV}
+        style={{ height: '60vh' }}
+      />
     ),
   });
 

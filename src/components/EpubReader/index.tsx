@@ -20,6 +20,7 @@ import memo from 'memoize-one';
 import useCurrentLocationInfo from '@/hooks/useCurrentLocationInfo';
 import useActions from '@/hooks/useActions';
 import { themeContext } from '@/wrapper/Theme';
+import useReaderEvent from '@/hooks/useReaderEvent';
 
 const EpubReaderStatusBar: EpubReaderStatusBarFC = ({ title }) => {
   const getTime = () =>
@@ -89,9 +90,18 @@ const EpubReader: EpubReaderFC = (props) => {
   };
 
   const closeDrawer = useCreation(
-    () => () => drawerVisibleActions.setFalse(),
+    () => () => !loading && drawerVisibleActions.setFalse(),
     [],
   );
+
+  const domRef = useRef<HTMLDivElement>(null);
+  // 各种操作事件监听
+  useReaderEvent({
+    book,
+    actions,
+    drawerVisibleActions,
+    domRef,
+  });
 
   window.book = book;
   if (!loading && !file) return <OpenEpubComponent useBook={setFile} />;
@@ -108,6 +118,10 @@ const EpubReader: EpubReaderFC = (props) => {
         onClickCapture={(e) => {
           if (loading || !book) e.stopPropagation();
         }}
+        // onWheel={(e) =>
+        //   e.nativeEvent.wheelDelta < 0 ? actions.next() : actions.prev()
+        // }
+        ref={domRef}
       >
         <div id="status-container" style={{ color: grey[500] }}>
           <EpubReaderStatusBar title={currentLocationInfo.currentTitle} />

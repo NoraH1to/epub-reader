@@ -40,7 +40,7 @@ const useEpub: UseEpub = ({ elId, file, options, theme }) => {
     }
   }, [file, elId, ...Object.values(options)]);
   useUpdateEffect(() => {
-    if (elId && file && options) {
+    if (elId && file && options && book?.rendition?.themes) {
       book.rendition.themes.default(theme);
       book.rendition.clear();
       book.rendition.display(book.rendition.location.start.href);
