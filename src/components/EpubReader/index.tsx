@@ -118,9 +118,6 @@ const EpubReader: EpubReaderFC = (props) => {
         onClickCapture={(e) => {
           if (loading || !book) e.stopPropagation();
         }}
-        // onWheel={(e) =>
-        //   e.nativeEvent.wheelDelta < 0 ? actions.next() : actions.prev()
-        // }
         ref={domRef}
       >
         <div id="status-container" style={{ color: grey[500] }}>

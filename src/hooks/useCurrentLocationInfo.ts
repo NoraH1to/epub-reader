@@ -1,7 +1,5 @@
 import { Book } from 'epubjs';
-import memoizeOne from 'memoize-one';
 import { useEffect, useRef, useState } from 'react';
-import { toast } from 'react-toastify';
 import { UseCurrentLocationInfo } from 'types/typings';
 
 const useCurrentLocationInfo: UseCurrentLocationInfo = (book) => {
