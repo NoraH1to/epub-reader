@@ -1,15 +1,10 @@
 import { createMuiTheme, ThemeOptions } from '@material-ui/core';
 import { GlobalTheme } from 'types/typings';
+import constant from '@/constant';
 
 const mduiConfig: ThemeOptions = {
   breakpoints: {
-    values: {
-      xs: 0,
-      sm: 400,
-      md: 800,
-      lg: 1280,
-      xl: 1920,
-    },
+    values: constant.responsive,
   },
 };
 

@@ -10,6 +10,10 @@ import NavList from '@/components/NavList';
 import './index.scss';
 import { themeContext } from '@/wrapper/Theme';
 import ThemeList from '@/components/ThemeList';
+import { configResponsive } from 'ahooks';
+import constant from '@/constant';
+
+configResponsive(constant.responsive);
 
 const OpenBook: EpubOpenFC = ({ useBook }) => (
   <div

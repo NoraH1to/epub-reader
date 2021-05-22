@@ -1,4 +1,5 @@
-import { createMuiTheme, Theme, ThemeOptions } from '@material-ui/core';
+import constant from '@/constant';
+import { createMuiTheme, ThemeOptions } from '@material-ui/core';
 import { GlobalTheme } from 'types/typings';
 
 const fontColor = '#999999 !important';
@@ -14,13 +15,7 @@ const mduiConfig: ThemeOptions = {
     type: 'dark',
   },
   breakpoints: {
-    values: {
-      xs: 0,
-      sm: 400,
-      md: 800,
-      lg: 1280,
-      xl: 1920,
-    },
+    values: constant.responsive,
   },
 };
 
