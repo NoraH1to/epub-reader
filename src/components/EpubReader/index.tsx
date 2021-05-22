@@ -1,10 +1,11 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import './index.scss';
 import useEpub from '@/hooks/useEpub';
 import { Book } from 'epubjs';
 import {
   Backdrop,
   Button,
+  ButtonBase,
   CircularProgress,
   Container,
   Typography,
@@ -12,15 +13,21 @@ import {
 import { grey } from '@material-ui/core/colors';
 import ChevronRightRoundedIcon from '@material-ui/icons/ChevronRightRounded';
 import ChevronLeftRoundedIcon from '@material-ui/icons/ChevronLeftRounded';
-import DehazeRoundedIcon from '@material-ui/icons/DehazeRounded';
 import { EpubReaderFC, EpubReaderStatusBarFC } from 'types/typings';
-import { useBoolean, useControllableValue, useCreation } from 'ahooks';
+import {
+  useBoolean,
+  useControllableValue,
+  useCreation,
+  useResponsive,
+  useUpdateEffect,
+} from 'ahooks';
 import { ReaderContext } from '@/ReaderContext';
 import memo from 'memoize-one';
 import useCurrentLocationInfo from '@/hooks/useCurrentLocationInfo';
 import useActions from '@/hooks/useActions';
 import { themeContext } from '@/wrapper/Theme';
 import useReaderEvent from '@/hooks/useReaderEvent';
+import constant from '@/constant';
 
 const EpubReaderStatusBar: EpubReaderStatusBarFC = ({ title }) => {
   const getTime = () =>
@@ -69,7 +76,7 @@ const EpubReader: EpubReaderFC = (props) => {
     defaultValuePropName: 'file',
     defaultValue: null,
   });
-  const { book, navigation, loading } = useEpub({
+  const { book, navigation, loading, setLoading } = useEpub({
     elId: 'epub',
     file,
     options: {
@@ -90,7 +97,7 @@ const EpubReader: EpubReaderFC = (props) => {
   };
 
   const closeDrawer = useCreation(
-    () => () => !loading && drawerVisibleActions.setFalse(),
+    () => () => ready && drawerVisibleActions.setFalse(),
     [],
   );
 
@@ -102,6 +109,48 @@ const EpubReader: EpubReaderFC = (props) => {
     drawerVisibleActions,
     domRef,
   });
+
+  // 临时解决宽度超过 lg 后 epubjs 的分页判断问题
+  const responsive = useResponsive();
+  useEffect(() => {
+    responsive.lg && file && setLoading(true);
+  }, [responsive]);
+  useUpdateEffect(() => {
+    ready &&
+      currentLocationInfo.currentRealHref &&
+      book.rendition.display(currentLocationInfo.currentRealHref);
+  }, [loading]);
+
+  const BtnPrev = useMemo(
+    () => (
+      <Button
+        title="上一页"
+        onClickCapture={() => {
+          actions.prev();
+        }}
+        fullWidth
+      >
+        <ChevronLeftRoundedIcon />
+      </Button>
+    ),
+    [],
+  );
+  const BtnNext = useMemo(
+    () => (
+      <Button
+        title="下一页"
+        onClickCapture={() => {
+          actions.next();
+        }}
+        fullWidth
+      >
+        <ChevronRightRoundedIcon />
+      </Button>
+    ),
+    [],
+  );
+
+  const ready = useMemo(() => !loading && book, [loading, book]);
 
   window.book = book;
   if (!loading && !file) return <OpenEpubComponent useBook={setFile} />;
@@ -116,45 +165,36 @@ const EpubReader: EpubReaderFC = (props) => {
       <div
         className="epub-reader"
         onClickCapture={(e) => {
-          if (loading || !book) e.stopPropagation();
+          if (!ready || !book) e.stopPropagation();
         }}
         ref={domRef}
       >
-        <div id="status-container" style={{ color: grey[500] }}>
-          <EpubReaderStatusBar title={currentLocationInfo.currentTitle} />
-        </div>
-        <Container maxWidth="lg" style={{ padding: 0, height: '100%' }}>
-          <div id="epub" />
-        </Container>
-        <div id="actions-container">
-          <Container maxWidth="lg" style={{ padding: 0 }}>
-            <div id="actions">
-              <Button
-                onClickCapture={() => {
-                  actions.prev();
-                }}
-                fullWidth
-              >
-                <ChevronLeftRoundedIcon />
-              </Button>
-              <Button
-                onClickCapture={() => {
-                  openMenu();
-                }}
-              >
-                <DehazeRoundedIcon />
-              </Button>
-              <Button
-                onClickCapture={() => {
-                  actions.next();
-                }}
-                fullWidth
-              >
-                <ChevronRightRoundedIcon />
-              </Button>
-            </div>
+        <ButtonBase title="菜单" component="div">
+          <div
+            id="status-container"
+            style={{ color: grey[500] }}
+            onClickCapture={() => openMenu()}
+          >
+            <EpubReaderStatusBar title={currentLocationInfo.currentTitle} />
+          </div>
+        </ButtonBase>
+        <div id="epub-container">
+          {responsive.lg && ready && BtnPrev}
+          <Container maxWidth="lg" style={{ padding: 0, height: '100%' }}>
+            <div id="epub" />
           </Container>
+          {responsive.lg && ready && BtnNext}
         </div>
+        {!responsive.lg && ready && (
+          <div id="actions-container-bottom">
+            <Container maxWidth="lg" style={{ padding: 0 }}>
+              <div id="actions">
+                {BtnPrev}
+                {BtnNext}
+              </div>
+            </Container>
+          </div>
+        )}
         <SheetComponent
           visible={drawerVisible}
           onChange={(value) => drawerVisibleActions.toggle()}
