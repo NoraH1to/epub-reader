@@ -11,7 +11,6 @@ const useEpub: UseEpub = ({ elId, file, options, theme }) => {
   const [loading, setLoading] = useState(false);
   const loadEpub = () => {
     if (!!file) {
-      setLoading(true);
       book.rendition?.destroy();
       book.destroy();
       const _book = ePub();
@@ -35,10 +34,13 @@ const useEpub: UseEpub = ({ elId, file, options, theme }) => {
   };
   useEffect(() => {
     if (elId && file && options) {
-      loadEpub();
+      setLoading(true);
       console.log('loadfile', file);
     }
   }, [file, elId, ...Object.values(options)]);
+  useEffect(() => {
+    loading && loadEpub();
+  }, [loading]);
   useUpdateEffect(() => {
     if (elId && file && options && book?.rendition?.themes) {
       book.rendition.themes.default(theme);
