@@ -110,11 +110,11 @@ const EpubReader: EpubReaderFC = (props) => {
     domRef,
   });
 
-  // 临时解决宽度超过 lg 后 epubjs 的分页判断问题
+  // 临时解决宽度过渡 lg 后 epubjs 的分页判断问题
   const responsive = useResponsive();
-  useEffect(() => {
-    responsive.lg && file && setLoading(true);
-  }, [responsive]);
+  useUpdateEffect(() => {
+    file && setLoading(true);
+  }, [responsive.lg]);
   useUpdateEffect(() => {
     ready &&
       currentLocationInfo.currentRealHref &&
@@ -181,11 +181,14 @@ const EpubReader: EpubReaderFC = (props) => {
         <div id="epub-container">
           {responsive.lg && ready && BtnPrev}
           <Container maxWidth="lg" style={{ padding: 0, height: '100%' }}>
-            <div id="epub" />
+            <div
+              id="epub"
+              style={{ maxWidth: constant.responsive.lg - 64 * 2 }}
+            />
           </Container>
           {responsive.lg && ready && BtnNext}
         </div>
-        {!responsive.lg && ready && (
+        {!responsive.lg && (
           <div id="actions-container-bottom">
             <Container maxWidth="lg" style={{ padding: 0 }}>
               <div id="actions">
