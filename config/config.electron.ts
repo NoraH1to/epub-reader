@@ -1,12 +1,13 @@
 import { defineConfig } from 'umi';
-import routes from './routes';
+import path from 'path';
 
 /**
  * @description 基础环境
  */
 export default defineConfig({
-  history: {
-    type: 'hash',
-  },
   publicPath: './',
+  define: {
+    NODE_ENV: 'dev',
+    HOST: `http://localhost:8989`,
+  },
 });

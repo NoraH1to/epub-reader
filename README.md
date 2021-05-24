@@ -3,7 +3,7 @@
 ### Web Site Todo
 
 - [x] theme
-- [ ] webDAV
+- [ ] ~~webDAV~~ (CORS)
 - [ ] notes
 - [ ] mark
 

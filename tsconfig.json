@@ -28,6 +28,7 @@
     "lib",
     "es",
     "dist",
+    "release",
     "typings",
     "**/__test__",
     "test",

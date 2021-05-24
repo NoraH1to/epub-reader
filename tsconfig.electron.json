@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "importHelpers": true,
+    "outDir": "elecDist",
+    "baseUrl": ".",
+    "noImplicitUseStrict": true,
+    "paths": {
+      "*": ["node_modules/*"]
+    }
+  },
+  "include": ["src/electron/**/*"]
+}

@@ -6,8 +6,6 @@ import { defineConfig } from 'umi';
 export default defineConfig({
   mock: false,
   define: {
-    BASE_URL: 'http://xxxx', // TODO: prod host
     NODE_ENV: 'prod',
-    HOST: 'http://zscnsd.norah1to.com:3001',
   },
 });

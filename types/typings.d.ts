@@ -16,6 +16,10 @@ declare module '*.svg' {
   export default url;
 }
 
+declare var BASE_URL: string | undefined;
+declare var NODE_ENV: 'dev' | 'prod';
+declare var HOST: string;
+
 interface UseEpubProps {
   elId: string;
   file: Book['Input'] | null;
