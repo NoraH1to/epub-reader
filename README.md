@@ -1,16 +1,44 @@
 # Epub Reader
 
-### Web Site Todo
+based on [`epub.js`](https://github.com/futurepress/epub.js)
 
-- [x] theme
-- [ ] ~~webDAV~~ (CORS)
-- [ ] notes
-- [ ] mark
+## Usage
 
-### Desktop Site Todo
+- first of all
 
-- [ ] theme
-- [ ] webDAV
-- [ ] notes
-- [ ] mark
-- [ ] buffer
+  `$ npm install`
+
+- web site dev
+
+  `$ npm run start`
+
+- desktop site dev
+
+  `$ npm run start:elec`
+
+- web site build
+
+  `$ npm run build`
+
+  output at `dist`  folder
+
+- desktop site build
+
+  `$ npm run build:elec`
+
+  output at `release` folder 
+
+## Todo
+
+- ### Web Site
+  - [x] theme
+  - [ ] ~~webDAV~~ (CORS)
+  - [ ] notes
+  - [ ] mark
+
+- ### Desktop Site
+  - [ ] theme
+  - [ ] webDAV
+  - [ ] notes
+  - [ ] mark
+  - [ ] buffer
