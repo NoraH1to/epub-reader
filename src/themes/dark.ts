@@ -1,4 +1,4 @@
-import constant from '@/constant';
+import constant from '@/common/constant';
 import { createMuiTheme, ThemeOptions } from '@material-ui/core';
 import { GlobalTheme } from 'types/typings';
 

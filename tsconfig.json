@@ -21,7 +21,8 @@
     "config/**/*",
     ".umirc.ts",
     "*.d.ts",
-    "types/**/*"
+    "types/**/*",
+    "src/electron/**/*.d.ts"
   ],
   "exclude": [
     "node_modules",

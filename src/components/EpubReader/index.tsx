@@ -27,7 +27,7 @@ import useCurrentLocationInfo from '@/hooks/useCurrentLocationInfo';
 import useActions from '@/hooks/useActions';
 import { themeContext } from '@/wrapper/Theme';
 import useReaderEvent from '@/hooks/useReaderEvent';
-import constant from '@/constant';
+import constant from '@/common/constant';
 
 const EpubReaderStatusBar: EpubReaderStatusBarFC = ({ title }) => {
   const getTime = () =>

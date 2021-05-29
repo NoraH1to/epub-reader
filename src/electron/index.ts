@@ -1,14 +1,12 @@
 import { app, BrowserWindow } from 'electron';
 import is from 'electron-is';
-import Koa from 'koa';
-import history from 'koa2-connect-history-api-fallback';
-import serve from 'koa-static';
-import path from 'path';
+import KoaService from './services';
+import webDAVService from './services/webDAV';
+import validate from './middleware/validate';
 
-const koaApp = new Koa();
-koaApp.use(history({ index: 'index.html' }));
-koaApp.use(serve(path.resolve(__dirname, '../dist')));
-koaApp.listen(8989);
+const KoaServiceInstance = new KoaService();
+KoaServiceInstance.koaApp.use(validate());
+KoaServiceInstance.useRouter(webDAVService);
 
 function createWindow() {
   const reader = new BrowserWindow({
@@ -17,6 +15,7 @@ function createWindow() {
   });
   if (is.dev()) reader.loadURL('http://localhost:8100');
   else reader.loadURL('http://localhost:8989');
+  KoaServiceInstance.windows.push(reader);
 
   const bookList = new BrowserWindow({
     width: 1440,
@@ -28,6 +27,7 @@ function createWindow() {
   });
   if (is.dev()) bookList.loadURL('http://localhost:8100/bookList');
   else bookList.loadURL('http://localhost:8989/bookList');
+  KoaServiceInstance.windows.push(bookList);
 }
 
 app.whenReady().then(() => {

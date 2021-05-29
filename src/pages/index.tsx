@@ -11,7 +11,7 @@ import './index.scss';
 import { themeContext } from '@/wrapper/Theme';
 import ThemeList from '@/components/ThemeList';
 import { configResponsive } from 'ahooks';
-import constant from '@/constant';
+import constant from '@/common/constant';
 
 configResponsive(constant.responsive);
 

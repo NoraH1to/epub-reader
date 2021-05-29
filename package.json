@@ -10,7 +10,7 @@
     "start:elec": "cross-env UMI_ENV=electron concurrently \"umi dev\" \"npm run elec\"",
     "build": "cross-env UMI_ENV=master umi build",
     "build:elec": "cross-env UMI_ENV=electron umi build && npm run tsc:elec && electron-builder",
-    "tsc:elec": "rimraf elecDist && tsc --project tsconfig.electron.json --outDir elecDist",
+    "tsc:elec": "rimraf elecDist && tsc --project tsconfig.electron.json",
     "elec": "npm run tsc:elec && electron .",
     "postinstall": "umi generate tmp",
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
@@ -44,6 +44,7 @@
     ]
   },
   "dependencies": {
+    "@koa/router": "^10.0.0",
     "@material-ui/core": "^4.11.4",
     "@material-ui/icons": "^4.11.2",
     "@umijs/preset-react": "1.x",
@@ -51,7 +52,9 @@
     "electron-is": "^3.0.0",
     "epubjs": "^0.3.88",
     "immutability-helper": "^3.1.1",
+    "joi": "^17.4.0",
     "koa": "^2.13.1",
+    "koa-bodyparser": "^4.3.0",
     "koa-static": "^5.0.0",
     "koa2-connect-history-api-fallback": "^0.1.3",
     "memoize-one": "^5.2.1",
@@ -65,7 +68,9 @@
   },
   "devDependencies": {
     "@types/koa": "^2.13.1",
+    "@types/koa-bodyparser": "^4.3.0",
     "@types/koa-static": "^4.0.1",
+    "@types/koa__router": "^8.0.4",
     "@types/nprogress": "^0.2.0",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
