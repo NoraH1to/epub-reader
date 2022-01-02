@@ -6,16 +6,17 @@
   "homepage": ".",
   "private": true,
   "scripts": {
-    "start": "umi dev",
-    "start:elec": "cross-env UMI_ENV=electron concurrently \"umi dev\" \"npm run elec\"",
-    "build": "cross-env UMI_ENV=master umi build",
-    "build:elec": "cross-env UMI_ENV=electron umi build && npm run tsc:elec && electron-builder",
-    "tsc:elec": "rimraf elecDist && tsc --project tsconfig.electron.json",
-    "elec": "npm run tsc:elec && electron .",
+    "preinstall": "npx only-allow yarn",
+    "prepare": "husky install",
     "postinstall": "umi generate tmp",
-    "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
-    "test": "umi-test",
-    "test:coverage": "umi-test --coverage"
+    "web:dev": "umi dev",
+    "web:build": "cross-env UMI_ENV=master umi build",
+    "electron:dev": "npm run tsc:elec && electron .",
+    "electron:build": "npm run tsc:elec && electron-builder",
+    "dev": "cross-env UMI_ENV=electron concurrently \"yarn web:dev\" \"yarn electron:dev\"",
+    "build": "cross-env UMI_ENV=electron yarn web:build && electron:build",
+    "tsc:elec": "rimraf elecDist && tsc --project tsconfig.electron.json",
+    "release": "standard-version"
   },
   "main": "./elecDist/index.js",
   "build": {
@@ -31,17 +32,6 @@
     "directories": {
       "output": "release"
     }
-  },
-  "gitHooks": {
-    "pre-commit": "lint-staged"
-  },
-  "lint-staged": {
-    "*.{js,jsx,less,md,json}": [
-      "prettier --write"
-    ],
-    "*.ts?(x)": [
-      "prettier --parser=typescript --write"
-    ]
   },
   "dependencies": {
     "@koa/router": "^10.0.0",
@@ -67,6 +57,8 @@
     "webdav": "^4.6.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "^16.0.1",
+    "@commitlint/config-conventional": "^16.0.0",
     "@types/koa": "^2.13.1",
     "@types/koa-bodyparser": "^4.3.0",
     "@types/koa-static": "^4.0.1",
@@ -82,12 +74,19 @@
     "cross-env": "^7.0.3",
     "electron": "^12.0.8",
     "electron-builder": "^22.10.5",
+    "husky": "^7.0.4",
     "lint-staged": "^10.0.7",
     "prettier": "^2.2.0",
     "react": "17.x",
     "react-dom": "17.x",
     "rimraf": "^3.0.2",
+    "standard-version": "^9.3.2",
     "typescript": "^4.1.2",
     "yorkie": "^2.0.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
   }
 }

@@ -1,30 +1,34 @@
+<div align="center">
+
 # Epub Reader
+
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
 based on [`epub.js`](https://github.com/futurepress/epub.js)
 
-## Usage
+</div>
 
-- first of all
+## Dev
 
-  `$ npm install`
+- web site
 
-- web site dev
+  `$ yarn web:dev`
 
-  `$ npm run start`
+- desktop site
 
-- desktop site dev
+  `$ yarn dev`
 
-  `$ npm run start:elec`
+## Build
 
-- web site build
+- web site
 
-  `$ npm run build`
+  `$ yarn web:build`
 
   output at `dist`  folder
 
-- desktop site build
+- desktop site
 
-  `$ npm run build:elec`
+  `$ yarn build`
 
   output at `release` folder 
 
