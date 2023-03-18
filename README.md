@@ -8,6 +8,12 @@ based on [`epub.js`](https://github.com/futurepress/epub.js)
 
 </div>
 
+##
+
+❗该项目正在重启，计划以插件形式实现功能，所以它将支持 epub 和其它更多格式
+
+❗The project is being restarted with plans to implement functionality as a plugin, so it will support epub and more formats
+
 ## Dev
 
 - web site
