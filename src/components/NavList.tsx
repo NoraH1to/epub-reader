@@ -4,7 +4,7 @@ import { List, ListItem, ListItemText } from '@material-ui/core';
 import { FC, useContext } from 'react';
 
 const NavList: FC = () => {
-  const { actions, closeDrawer, book } = useContext(ReaderContext);
+  const { actions, drawerVisibleActions, book } = useContext(ReaderContext);
   const { currentRealHref } = useCurrentLocationInfo(book);
 
   return (
@@ -16,7 +16,7 @@ const NavList: FC = () => {
           button
           onClick={() => {
             actions?.goto(item.href);
-            closeDrawer?.();
+            drawerVisibleActions?.setFalse();
           }}
         >
           <ListItemText>{item.label}</ListItemText>

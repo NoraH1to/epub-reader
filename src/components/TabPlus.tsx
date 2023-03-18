@@ -1,13 +1,15 @@
 import { CSSProperties, FC, useState } from 'react';
 import { Tab, Tabs } from '@material-ui/core';
-import { TabData, TabPanelFC } from 'types/typings';
 import SwipeableViews from 'react-swipeable-views';
+import { TabData } from './EpubReader/Drawer';
+
+export type TabPanelFC = FC<{ value: any }>;
 
 const TabsPlus: FC<{
-  tabDatas: TabData[];
+  tabData: TabData[];
   defaultTab: any;
   style?: CSSProperties;
-}> = ({ tabDatas, defaultTab, style }) => {
+}> = ({ tabData, defaultTab, style }) => {
   const [_value, setValue] = useState(defaultTab);
 
   const TabPanel: TabPanelFC = ({ value, children }) => {
@@ -41,7 +43,7 @@ const TabsPlus: FC<{
             zIndex: 10,
           }}
         >
-          {tabDatas.map((tab) => (
+          {tabData.map((tab) => (
             <Tab key={tab.value} label={tab.label} value={tab.value} />
           ))}
         </Tabs>
@@ -53,7 +55,7 @@ const TabsPlus: FC<{
         }}
         style={{ height: '100%' }}
       >
-        {tabDatas.map((tab) => (
+        {tabData.map((tab) => (
           <TabPanel key={tab.value} value={tab.value}>
             <tab.Panel />
           </TabPanel>

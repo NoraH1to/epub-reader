@@ -1,15 +1,9 @@
-import { FC, useCallback, useContext } from 'react';
+import { FC, useContext } from 'react';
 import { Button } from '@material-ui/core';
 import ImportContactsRoundedIcon from '@material-ui/icons/ImportContactsRounded';
-import EpubReader from '@/components/EpubReader';
-import { EpubOpenFC, TabData } from 'types/typings';
-import useChildren from '@/hooks/useChildren';
-import DrawerContainer from '@/components/EpubReader/DrawerContainer';
-import TabsPlus from '@/components/TabPlus';
-import NavList from '@/components/NavList';
+import EpubReader, { EpubOpenFC } from '@/components/EpubReader';
 import './index.scss';
 import { themeContext } from '@/wrapper/Theme';
-import ThemeList from '@/components/ThemeList';
 import { configResponsive } from 'ahooks';
 import constant from '@/common/constant';
 
@@ -52,37 +46,12 @@ const OpenBook: EpubOpenFC = ({ useBook }) => (
   </div>
 );
 
-const TabValues = {
-  NAV: 0,
-  THEMES: 1,
-};
-
 const index: FC = () => {
   const { currentTheme, setCurrentTheme } = useContext(themeContext);
 
-  const tabDatas: TabData[] = [
-    { label: '目录', value: TabValues.NAV, Panel: useCallback(NavList, []) },
-    {
-      label: '主题',
-      value: TabValues.THEMES,
-      Panel: ThemeList,
-    },
-  ];
-
-  const Drawer = useChildren({
-    Compnent: DrawerContainer,
-    Children: (
-      <TabsPlus
-        tabDatas={tabDatas}
-        defaultTab={TabValues.NAV}
-        style={{ height: '60vh' }}
-      />
-    ),
-  });
-
   return (
     <div className={`main ${currentTheme?.className}`}>
-      <EpubReader OpenEpubComponent={OpenBook} SheetComponent={Drawer} />
+      <EpubReader OpenEpubComponent={OpenBook} />
     </div>
   );
 };

@@ -78,39 +78,6 @@ type UseChildrenProps = { Children: FC<any> | ReactElement; Compnent: FC<any> };
 interface UseChildren {
   ({ Children, Compnent }: UseChildrenProps): FC<any>;
 }
-
-type EpubOpenFC = FC<{
-  useBook: (file: Book['Input']) => void;
-}>;
-type EpubSheetFC = FC<{
-  visible: boolean;
-  onChange(value: boolean): void;
-}>;
-type EpubReaderFC = FC<{
-  OpenEpubComponent: EpubOpenFC;
-  SheetComponent: EpubSheetFC;
-  file?: Book['Input'];
-}>;
-type TabPanelFC = FC<{ value: any }>;
-interface TabData {
-  label?: string;
-  value: any;
-  Panel: FC<any>;
-  icon?: ReactElement;
-}
-type EpubReaderStatusBarFC = FC<{
-  title: string;
-}>;
-
-interface ReaderContextContent {
-  book?: Book;
-  actions?: {
-    next: () => void;
-    prev: () => void;
-    goto: (path: string) => void;
-  };
-  closeDrawer?: Function;
-}
 interface ThemeContextContent {
   currentTheme?: GlobalTheme;
   setCurrentTheme?: React.Dispatch<React.SetStateAction<GlobalTheme>>;

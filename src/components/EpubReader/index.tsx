@@ -1,4 +1,12 @@
-import { useContext, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  FC,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import './index.scss';
 import useEpub from '@/hooks/useEpub';
 import { Book } from 'epubjs';
@@ -13,7 +21,6 @@ import {
 import { grey } from '@material-ui/core/colors';
 import ChevronRightRoundedIcon from '@material-ui/icons/ChevronRightRounded';
 import ChevronLeftRoundedIcon from '@material-ui/icons/ChevronLeftRounded';
-import { EpubReaderFC, EpubReaderStatusBarFC } from 'types/typings';
 import {
   useBoolean,
   useControllableValue,
@@ -28,48 +35,18 @@ import useActions from '@/hooks/useActions';
 import { themeContext } from '@/wrapper/Theme';
 import useReaderEvent from '@/hooks/useReaderEvent';
 import constant from '@/common/constant';
+import Drawer from '@/components/EpubReader/Drawer';
+import StatusBar from './StatusBar';
 
-const EpubReaderStatusBar: EpubReaderStatusBarFC = ({ title }) => {
-  const getTime = () =>
-    `${new Date()
-      .getHours()
-      .toString()
-      .padStart(2, '0')}:${new Date()
-      .getMinutes()
-      .toString()
-      .padStart(2, '0')}`;
-  const [timeStr, setTimeStr] = useState(getTime());
-  const setTime = memo((time: string) => {
-    setTimeStr(time);
-  });
-  const timeTimerRef = useRef<NodeJS.Timeout | null>(null);
-  useEffect(() => {
-    if (timeTimerRef.current !== null) clearInterval(timeTimerRef.current);
-    timeTimerRef.current = setInterval(() => setTime(getTime()), 1000);
-    return () => {
-      timeTimerRef.current !== null && clearInterval(timeTimerRef.current);
-    };
-  }, []);
-  return (
-    <>
-      <Typography
-        style={{
-          flexGrow: 1,
-          whiteSpace: 'nowrap',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          marginRight: '8px',
-        }}
-      >
-        {title}
-      </Typography>
-      <Typography>{timeStr}</Typography>
-    </>
-  );
-};
-
+export type EpubOpenFC = FC<{
+  useBook: (file: Book['Input']) => void;
+}>;
+export type EpubReaderFC = FC<{
+  OpenEpubComponent: EpubOpenFC;
+  file?: Book['Input'];
+}>;
 const EpubReader: EpubReaderFC = (props) => {
-  const { OpenEpubComponent, SheetComponent, file: _file } = props;
+  const { OpenEpubComponent, file: _file } = props;
   const { currentTheme } = useContext(themeContext);
   const [file, setFile] = useControllableValue<Book['Input'] | null>(props, {
     valuePropName: 'file',
@@ -95,11 +72,6 @@ const EpubReader: EpubReaderFC = (props) => {
   const openMenu = () => {
     drawerVisibleActions.setTrue();
   };
-
-  const closeDrawer = useCreation(
-    () => () => ready && drawerVisibleActions.setFalse(),
-    [],
-  );
 
   const domRef = useRef<HTMLDivElement>(null);
   // 各种操作事件监听
@@ -152,14 +124,13 @@ const EpubReader: EpubReaderFC = (props) => {
 
   const ready = useMemo(() => !loading && book, [loading, book]);
 
-  window.book = book;
   if (!loading && !file) return <OpenEpubComponent useBook={setFile} />;
   return (
     <ReaderContext.Provider
       value={{
         book,
         actions,
-        closeDrawer,
+        drawerVisibleActions,
       }}
     >
       <div
@@ -175,7 +146,7 @@ const EpubReader: EpubReaderFC = (props) => {
             style={{ color: grey[500] }}
             onClickCapture={() => openMenu()}
           >
-            <EpubReaderStatusBar title={currentLocationInfo.currentTitle} />
+            <StatusBar title={currentLocationInfo.currentTitle} />
           </div>
         </ButtonBase>
         <div id="epub-container">
@@ -198,9 +169,11 @@ const EpubReader: EpubReaderFC = (props) => {
             </Container>
           </div>
         )}
-        <SheetComponent
+        <Drawer
           visible={drawerVisible}
-          onChange={(value) => drawerVisibleActions.toggle()}
+          onChange={(v) =>
+            v ? drawerVisibleActions.setTrue() : drawerVisibleActions.setFalse()
+          }
         />
       </div>
       <Backdrop open={loading} style={{ zIndex: 10 }}>

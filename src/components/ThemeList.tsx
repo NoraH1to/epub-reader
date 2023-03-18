@@ -6,7 +6,7 @@ import { FC, useContext } from 'react';
 
 const ThemeList: FC = () => {
   const { currentTheme, setCurrentTheme } = useContext(themeContext);
-  const { actions, closeDrawer, book } = useContext(ReaderContext);
+  const { actions, drawerVisibleActions, book } = useContext(ReaderContext);
 
   return (
     <List>
@@ -16,7 +16,7 @@ const ThemeList: FC = () => {
           key={index}
           selected={index === currentTheme?.name}
           onClick={() => {
-            closeDrawer && closeDrawer();
+            drawerVisibleActions?.setFalse();
             setCurrentTheme && setCurrentTheme(theme);
           }}
         >
