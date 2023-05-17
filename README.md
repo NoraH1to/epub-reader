@@ -10,9 +10,9 @@ based on [`epub.js`](https://github.com/futurepress/epub.js)
 
 ##
 
-❗该项目正在重启，计划以插件形式实现功能，所以它将支持 epub 和其它更多格式
+❗不再维护，新项目：[yue](https://github.com/NoraH1to/yue)
 
-❗The project is being restarted with plans to implement functionality as a plugin, so it will support epub and more formats
+❗No longer maintained, new project: [yue](https://github.com/NoraH1to/yue)
 
 ## Dev
 
